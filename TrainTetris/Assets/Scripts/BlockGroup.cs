@@ -8,8 +8,11 @@ public class BlockGroup : MonoBehaviour
 {
     private Vector3 screenPoint;
     private Vector3 offset;
+
+    private Vector3 previousPos;
     private int stopsLeft;
     private SpriteRenderer[] _renderers;
+    private bool isValidMove;
     
     public void Awake()
     {
@@ -21,6 +24,29 @@ public class BlockGroup : MonoBehaviour
     {
         screenPoint = Camera.main.WorldToScreenPoint(Input.mousePosition);
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        previousPos = transform.position;
+        isValidMove = true;
+    }
+
+    void OnMouseDrag()
+    {
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+        transform.position = curPosition;
+    }
+
+    private void OnMouseUp()
+    {
+        if (!isValidMove)
+        {
+            transform.position = previousPos;
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        isValidMove = false;
+        Debug.Log("Collision");
     }
 
     public void ChangeColor()
@@ -58,16 +84,5 @@ public class BlockGroup : MonoBehaviour
         {
             stopsLeft -= 1;
         }
-    }
-
-    void OnMouseDrag()
-    {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        transform.position = curPosition;
-    }
-
-    private void OnMouseUp()
-    {
     }
 }
