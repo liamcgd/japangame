@@ -42,6 +42,10 @@ public class BlockGroup : MonoBehaviour
         {
             transform.position = previousPos;
         }
+        else
+        {
+            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D other)
