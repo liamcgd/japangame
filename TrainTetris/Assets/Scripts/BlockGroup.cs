@@ -13,6 +13,7 @@ public class BlockGroup : MonoBehaviour
     private int stopsLeft;
     private SpriteRenderer[] _renderers;
     private bool isValidMove;
+    private int collisionCount;
     
     public void Awake()
     {
@@ -37,7 +38,7 @@ public class BlockGroup : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!isValidMove)
+        if (collisionCount > 0)
         {
             transform.position = previousPos;
         }
@@ -45,8 +46,13 @@ public class BlockGroup : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        isValidMove = false;
+        collisionCount++;
         Debug.Log("Collision");
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        collisionCount--;
     }
 
     public void ChangeColor()
