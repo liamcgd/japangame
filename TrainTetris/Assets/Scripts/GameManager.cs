@@ -48,4 +48,13 @@ public class GameManager : MonoBehaviour
         pauseMenu.alpha = 0;
         pauseMenu.blocksRaycasts = false;
     }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }
