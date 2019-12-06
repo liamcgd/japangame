@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,6 +15,7 @@ public class BlockGroup : MonoBehaviour
     private SpriteRenderer[] _renderers;
     private bool isValidMove;
     private int collisionCount;
+    [SerializeField] private TextMeshProUGUI stopsLeftText;
     
     public void Awake()
     {
@@ -86,6 +88,8 @@ public class BlockGroup : MonoBehaviour
 
             }
         }
+
+        stopsLeftText.text = stopsLeft.ToString();
     }
 
     public void NextStop()
