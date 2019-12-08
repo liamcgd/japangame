@@ -8,7 +8,7 @@ public class Group2 : BlockGroup
 {
     private Vector2[] rotatePoints;
 
-    void Start()
+    public override void Start()
     {
         rotatePoints = new Vector2[] {
             Vector2.right,
@@ -20,7 +20,7 @@ public class Group2 : BlockGroup
             transform.GetChild(0),
             transform.GetChild(1),
         };
-        materials = new Material[] {
+        materials = new List<Material>() {
             transforms[0].GetComponent<SpriteRenderer>().material,
             transforms[1].GetComponent<SpriteRenderer>().material,
         };

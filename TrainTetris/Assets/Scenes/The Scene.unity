@@ -999,8 +999,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 374359908}
   pauseMenu: {fileID: 570536974}
-  stopColours: []
-  stopBorderColours: []
 --- !u!1 &736211644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1023,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736211644}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc2a6e28f5ee6e54abaa204518da7bc2, type: 3}
   m_Name: 

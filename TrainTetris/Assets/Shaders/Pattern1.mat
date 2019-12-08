@@ -42,7 +42,7 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _Border: 0.484
-    - _BorderValue: 0.5
+    - _BorderValue: 0
     - _ColorMask: 15
     - _Float2: 1
     - _Stencil: 0
@@ -53,6 +53,6 @@ Material:
     - _UseUIAlphaClip: 0
     - __dirty: 0
     m_Colors:
-    - _BorderColour: {r: 0, g: 1, b: 0.09174347, a: 0}
+    - _BorderColour: {r: 0.1977572, g: 0.41509432, b: 0.21736017, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Colour: {r: 1, g: 0, b: 0, a: 0}
+    - _Colour: {r: 1, g: 0.08018869, b: 0.08018869, a: 1}

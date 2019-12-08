@@ -1,17 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI stationText;
+
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private CanvasGroup pauseMenu;
     // Feel free to move functionality out if wanted
     [SerializeField] public static Color[] stopColours;
     [SerializeField] public static Color[] stopBorderColours;
+    private List<Station> stations;
+    private int stationNumber = 0;
 
     private float depTimer = 30;
+    public static int score = 0;
+    public static event Action nextStopEvent;
 
     void Start()
     {
@@ -28,6 +35,16 @@ public class GameManager : MonoBehaviour
             new Color(230f, 151f, 117f),
             new Color(102f, 117f, 76f),
         };
+        stations = new List<Station>()
+        {
+            new Station("Tokyo", "right"),
+            new Station("Shinagawa", "left"),
+            new Station("Shibuya", "right"),
+            new Station("Shinjuku", "left"),
+            new Station("Ikebukuro", "right"),
+            new Station("Ueno", "left"),
+        };
+        stationText.text = stations[stationNumber].StationName;
     }
 
     void Update()
@@ -42,6 +59,24 @@ public class GameManager : MonoBehaviour
             timerText.text = "00:00";
             // Cancel input
             // Move to next station
+            if (stationNumber >= stations.Count)
+            {
+                // Game Over
+            }
+            else
+            {
+                ChangeStation();
+            }
+        }
+    }
+
+    public void ChangeStation()
+    {
+        stationNumber++;
+        stationText.text = stations[stationNumber].StationName;
+        if (nextStopEvent != null)
+        {
+            nextStopEvent();
         }
     }
 

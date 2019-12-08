@@ -7,19 +7,15 @@ using Random = UnityEngine.Random;
 
 public class BlockGroup : MonoBehaviour
 {
-    protected int rotateCounter = 0;
     private Vector3 screenPoint;
     private Vector3 offset;
-
     private Vector3 previousPos;
+    protected int rotateCounter = 0;
     protected int stopsLeft;
     protected List<Transform> transforms;
-    protected Material[] materials;
-
+    protected List<Material> materials;
 
     private SpriteRenderer[] _renderers;
-    private bool isValidMove;
-    private int collisionCount;
     [SerializeField] private TextMeshProUGUI stopsLeftText;
 
     public void Awake()
@@ -27,6 +23,19 @@ public class BlockGroup : MonoBehaviour
         stopsLeft = Random.Range(1, 4);
         _renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
         ChangeColor();
+        RandomRotation();
+    }
+
+    public virtual void Start()
+    {
+        transforms = new List<Transform>() {
+            transform.GetChild(0)
+        };
+        materials = new List<Material>()
+        {
+            transforms[0].GetComponent<SpriteRenderer>().material
+        };
+        GameManager.nextStopEvent += NextStop;
     }
 
     void OnMouseDown()
@@ -34,7 +43,6 @@ public class BlockGroup : MonoBehaviour
         screenPoint = Camera.main.WorldToScreenPoint(Input.mousePosition);
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
         previousPos = transform.position;
-        isValidMove = true;
     }
 
     void OnMouseDrag()
@@ -46,25 +54,15 @@ public class BlockGroup : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (collisionCount > 0)
+        if (IsValidGridPosition())
         {
-            transform.position = previousPos;
+            UpdateGrid();
         }
         else
         {
-            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+            // Reset back
+            transform.position = previousPos;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        collisionCount++;
-        Debug.Log("Collision");
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        collisionCount--;
     }
 
     public void ChangeColor()
@@ -84,15 +82,25 @@ public class BlockGroup : MonoBehaviour
         if (stopsLeft > 0)
         {
             stopsLeft -= 1;
+            ChangeColor();
+        }
+        else
+        {
+            // Increase score by group size
+            GameManager.score += transforms.Count;
+            // Remove from delegate
+            GameManager.nextStopEvent -= NextStop;
+            // Remove from train
+            Destroy(gameObject);
         }
     }
 
     public bool IsValidGridPosition()
     {
-        foreach (Transform child in transform)
+        foreach (Transform t in transforms)
         {
             // Round vector (Necessary?)
-            Vector2 v = Train.RoundVector(child.position);
+            Vector2 v = Train.RoundVector(t.position);
             // If not inside the train borders
             if (!Train.InsideTrain(v))
                 return false;
@@ -114,10 +122,10 @@ public class BlockGroup : MonoBehaviour
                         Train.grid[x, y] = null;
 
         // Add new children to grid
-        foreach (Transform child in transform)
+        foreach (Transform t in transforms)
         {
-            Vector2 v = Train.RoundVector(child.position);
-            Train.grid[(int)v.x, (int)v.y] = child;
+            Vector2 v = Train.RoundVector(t.position);
+            Train.grid[(int)v.x, (int)v.y] = t;
         }
     }
 
