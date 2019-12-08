@@ -16,17 +16,18 @@ public class Group3 : BlockGroup
             { Vector2.zero, Vector2.left, Vector2.down },
             { Vector2.zero, Vector2.down, Vector2.right },
         };
-        transforms = new List<Transform>() {
-            transform.Find("Block").transform,
-            transform.GetChild(1).transform,
-            transform.GetChild(2).transform,
+        children = new List<GameObject>() {
+            transform.Find("Block").gameObject,
+            transform.GetChild(1).gameObject,
+            transform.GetChild(2).gameObject,
         };
-        materials = new List<Material>() {
-            transforms[0].GetComponent<SpriteRenderer>().material,
-            transforms[1].GetComponent<SpriteRenderer>().material,
-            transforms[2].GetComponent<SpriteRenderer>().material,
-        };
-        Debug.Log(transforms.Count);
+        // materials = new List<Material>() {
+        //     children[0].GetComponent<SpriteRenderer>().material,
+        //     children[1].GetComponent<SpriteRenderer>().material,
+        //     children[2].GetComponent<SpriteRenderer>().material,
+        // };
+        ChangeColor();
+        RandomRotation();
     }
 
     void Update()
@@ -44,7 +45,7 @@ public class Group3 : BlockGroup
         for (int i = 0; i < 3; i++)
         {
             // Apply transform
-            transforms[i].localPosition = rotatePoints[rotateCounter, i];
+            children[i].transform.localPosition = rotatePoints[rotateCounter, i];
         }
         base.Rotate();
     }

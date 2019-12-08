@@ -16,14 +16,16 @@ public class Group2 : BlockGroup
             Vector2.left,
             Vector2.down
         };
-        transforms = new List<Transform>() {
-            transform.GetChild(0),
-            transform.GetChild(1),
+        children = new List<GameObject>() {
+            transform.GetChild(0).gameObject,
+            transform.GetChild(1).gameObject,
         };
-        materials = new List<Material>() {
-            transforms[0].GetComponent<SpriteRenderer>().material,
-            transforms[1].GetComponent<SpriteRenderer>().material,
-        };
+        // materials = new List<Material>() {
+        //     children[0].GetComponent<SpriteRenderer>().material,
+        //     children[1].GetComponent<SpriteRenderer>().material,
+        // };
+        ChangeColor();
+        RandomRotation();
     }
 
     void Update()
@@ -34,7 +36,7 @@ public class Group2 : BlockGroup
     public override void Rotate()
     {
         // Rotate the piece and increment the counter
-        transforms[1].localPosition = transforms[0].localPosition - (Vector3)rotatePoints[rotateCounter];
+        children[1].transform.localPosition = children[0].transform.localPosition - (Vector3)rotatePoints[rotateCounter];
         base.Rotate();
     }
 }

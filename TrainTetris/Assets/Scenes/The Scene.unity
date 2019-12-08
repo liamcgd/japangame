@@ -997,8 +997,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a404dba43f35f479fbffac6567e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stationText: {fileID: 964070842}
+  scoreText: {fileID: 1733814042}
   timerText: {fileID: 374359908}
   pauseMenu: {fileID: 570536974}
+  stopColours: []
+  stopBorderColours: []
+  score: 0
 --- !u!1 &736211644
 GameObject:
   m_ObjectHideFlags: 0

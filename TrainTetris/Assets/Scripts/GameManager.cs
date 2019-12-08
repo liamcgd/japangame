@@ -6,24 +6,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI stationText;
+    private static GameManager _instance;
+    public static GameManager Instance { get { return _instance; } }
 
+    [SerializeField] private TextMeshProUGUI stationText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private CanvasGroup pauseMenu;
     // Feel free to move functionality out if wanted
-    [SerializeField] public static Color[] stopColours;
-    [SerializeField] public static Color[] stopBorderColours;
+    [SerializeField] public Color[] stopColours;
+    [SerializeField] public Color[] stopBorderColours;
     private List<Station> stations;
     private int stationNumber = 0;
 
     private float depTimer = 30;
-    public static int score = 0;
-    public static event Action nextStopEvent;
+    public int score = 0;
+    public event Action nextStopEvent;
 
-    void Start()
+    private void Awake()
     {
-        InvokeRepeating(nameof(UpdateTimer), 0, 1);
-        // Colours to fill each person by stop
+        // Singleton
+        if (_instance != null && _instance != this)
+            Destroy(this.gameObject);
+        else
+            _instance = this;
+
         stopColours = new Color[] {
             new Color(250f, 135f, 127f),
             new Color(242f, 203f, 124f),
@@ -44,6 +51,14 @@ public class GameManager : MonoBehaviour
             new Station("Ikebukuro", "right"),
             new Station("Ueno", "left"),
         };
+        scoreText.text = "Score: " + score.ToString();
+    }
+
+    void Start()
+    {
+        InvokeRepeating(nameof(UpdateTimer), 0, 1);
+        // Colours to fill each person by stop
+
         stationText.text = stations[stationNumber].StationName;
     }
 
@@ -57,17 +72,24 @@ public class GameManager : MonoBehaviour
         {
             CancelInvoke(nameof(UpdateTimer));
             timerText.text = "00:00";
-            // Cancel input
+            // Cancel input?
             // Move to next station
             if (stationNumber >= stations.Count)
             {
                 // Game Over
+                QuitGame();
             }
             else
             {
                 ChangeStation();
             }
         }
+    }
+
+    public void UpdateScore(int amount)
+    {
+        score += amount;
+        scoreText.text = "Score: " + score.ToString();
     }
 
     public void ChangeStation()

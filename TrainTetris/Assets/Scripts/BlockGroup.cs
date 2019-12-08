@@ -12,7 +12,7 @@ public class BlockGroup : MonoBehaviour
     private Vector3 previousPos;
     protected int rotateCounter = 0;
     protected int stopsLeft;
-    protected List<Transform> transforms;
+    protected List<GameObject> children;
     protected List<Material> materials;
 
     private SpriteRenderer[] _renderers;
@@ -22,20 +22,20 @@ public class BlockGroup : MonoBehaviour
     {
         stopsLeft = Random.Range(1, 4);
         _renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
-        ChangeColor();
-        RandomRotation();
     }
 
     public virtual void Start()
     {
-        transforms = new List<Transform>() {
-            transform.GetChild(0)
+        children = new List<GameObject>() {
+            transform.GetChild(0).gameObject
         };
-        materials = new List<Material>()
-        {
-            transforms[0].GetComponent<SpriteRenderer>().material
-        };
-        GameManager.nextStopEvent += NextStop;
+        // materials = new List<Material>()
+        // {
+        //     transforms[0].GetComponent<SpriteRenderer>().material
+        // };
+        GameManager.Instance.nextStopEvent += NextStop;
+        ChangeColor();
+        RandomRotation();
     }
 
     void OnMouseDown()
@@ -49,7 +49,7 @@ public class BlockGroup : MonoBehaviour
     {
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        transform.position = curPosition;
+        transform.position = Train.RoundVector(curPosition);
     }
 
     private void OnMouseUp()
@@ -68,10 +68,14 @@ public class BlockGroup : MonoBehaviour
     public void ChangeColor()
     {
         // Set fill and border colours here
-        foreach (Material m in materials)
+        // foreach (Material m in materials)
+        // {
+        //     m.SetColor("_Colour", GameManager.stopColours[stopsLeft - 1]);
+        //     m.SetColor("_BorderColour", GameManager.stopBorderColours[stopsLeft - 1]);
+        // }
+        foreach (GameObject g in children)
         {
-            m.SetColor("_Colour", GameManager.stopColours[stopsLeft - 1]);
-            m.SetColor("_BorderColour", GameManager.stopBorderColours[stopsLeft - 1]);
+            g.GetComponent<SpriteRenderer>().color = GameManager.Instance.stopColours[stopsLeft - 1];
         }
 
         stopsLeftText.text = stopsLeft.ToString();
@@ -87,9 +91,9 @@ public class BlockGroup : MonoBehaviour
         else
         {
             // Increase score by group size
-            GameManager.score += transforms.Count;
+            GameManager.Instance.UpdateScore(children.Count);
             // Remove from delegate
-            GameManager.nextStopEvent -= NextStop;
+            GameManager.Instance.nextStopEvent -= NextStop;
             // Remove from train
             Destroy(gameObject);
         }
@@ -97,10 +101,10 @@ public class BlockGroup : MonoBehaviour
 
     public bool IsValidGridPosition()
     {
-        foreach (Transform t in transforms)
+        foreach (GameObject g in children)
         {
             // Round vector (Necessary?)
-            Vector2 v = Train.RoundVector(t.position);
+            Vector2 v = Train.RoundVector(g.transform.position);
             // If not inside the train borders
             if (!Train.InsideTrain(v))
                 return false;
@@ -122,10 +126,10 @@ public class BlockGroup : MonoBehaviour
                         Train.grid[x, y] = null;
 
         // Add new children to grid
-        foreach (Transform t in transforms)
+        foreach (GameObject g in children)
         {
-            Vector2 v = Train.RoundVector(t.position);
-            Train.grid[(int)v.x, (int)v.y] = t;
+            Vector2 v = Train.RoundVector(g.transform.position);
+            Train.grid[(int)v.x, (int)v.y] = g.transform;
         }
     }
 
@@ -147,9 +151,9 @@ public class BlockGroup : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (Material m in materials)
-        {
-            Destroy(m);
-        }
+        // foreach (Material m in materials)
+        // {
+        //     Destroy(m);
+        // }
     }
 }
