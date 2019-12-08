@@ -35,7 +35,8 @@ public class BlockGroup : MonoBehaviour
         // };
         GameManager.Instance.nextStopEvent += NextStop;
         ChangeColor();
-        RandomRotation();
+        // RandomRotation();
+        UpdateGrid();
     }
 
     void OnMouseDown()

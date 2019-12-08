@@ -44,4 +44,23 @@ public class Train : MonoBehaviour
     {
         return ((int)pos.x >= 0 && (int)pos.x < width && (int)pos.y >= 0 && (int)pos.y < length);
     }
+
+    private void OnDrawGizmos()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < length; y++)
+            {
+                if (grid[x, y] == null)
+                {
+                    Gizmos.color = Color.green;
+                }
+                else
+                {
+                    Gizmos.color = Color.red;
+                }
+                Gizmos.DrawCube(new Vector3(x + 0.5f, y + 0.5f), Vector2.one / 2);
+            }
+        }
+    }
 }

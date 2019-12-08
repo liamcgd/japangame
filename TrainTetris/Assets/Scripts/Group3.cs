@@ -12,9 +12,9 @@ public class Group3 : BlockGroup
     {
         rotatePoints = new Vector2[,] {
             { Vector2.zero, Vector2.right, Vector2.up },
-            { Vector2.zero, Vector2.up, Vector2.left },
-            { Vector2.zero, Vector2.left, Vector2.down },
-            { Vector2.zero, Vector2.down, Vector2.right },
+            { Vector2.zero, Vector2.right, Vector2.one },
+            { Vector2.up, Vector2.one, Vector2.right },
+            { Vector2.zero, Vector2.up, Vector2.one },
         };
         children = new List<GameObject>() {
             transform.Find("Block").gameObject,
@@ -28,6 +28,7 @@ public class Group3 : BlockGroup
         // };
         ChangeColor();
         RandomRotation();
+        UpdateGrid();
     }
 
     void Update()

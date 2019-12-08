@@ -16,12 +16,15 @@ public class GameManager : MonoBehaviour
     // Feel free to move functionality out if wanted
     [SerializeField] public Color[] stopColours;
     [SerializeField] public Color[] stopBorderColours;
+    [SerializeField] public GameObject[] spawnGroups;
+
     private List<Station> stations;
     private int stationNumber = 0;
 
     private float depTimer = 30;
     public int score = 0;
     public event Action nextStopEvent;
+    public string spawnSide;
 
     private void Awake()
     {
@@ -52,6 +55,7 @@ public class GameManager : MonoBehaviour
             new Station("Ueno", "left"),
         };
         scoreText.text = "Score: " + score.ToString();
+        spawnSide = stations[stationNumber].EntryDirection;
     }
 
     void Start()
@@ -96,6 +100,7 @@ public class GameManager : MonoBehaviour
     {
         stationNumber++;
         stationText.text = stations[stationNumber].StationName;
+        spawnSide = stations[stationNumber].EntryDirection;
         if (nextStopEvent != null)
         {
             nextStopEvent();

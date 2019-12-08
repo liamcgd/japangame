@@ -13,8 +13,8 @@ public class Group2 : BlockGroup
         rotatePoints = new Vector2[] {
             Vector2.right,
             Vector2.up,
-            Vector2.left,
-            Vector2.down
+            Vector2.right,
+            Vector2.up
         };
         children = new List<GameObject>() {
             transform.GetChild(0).gameObject,
@@ -26,6 +26,7 @@ public class Group2 : BlockGroup
         // };
         ChangeColor();
         RandomRotation();
+        UpdateGrid();
     }
 
     void Update()
@@ -36,7 +37,7 @@ public class Group2 : BlockGroup
     public override void Rotate()
     {
         // Rotate the piece and increment the counter
-        children[1].transform.localPosition = children[0].transform.localPosition - (Vector3)rotatePoints[rotateCounter];
+        children[1].transform.localPosition = rotatePoints[rotateCounter];
         base.Rotate();
     }
 }

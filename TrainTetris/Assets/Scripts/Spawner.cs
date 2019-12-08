@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] groups;
+    public Vector2 spawnTile;
 
     private void Start()
     {
-        // Spawn initial Group
-        //SpawnNext();
+        InvokeRepeating(nameof(Spawn), 0, 1);
     }
 
-    private void Update()
+    private void Spawn()
     {
-        if (Input.GetKeyUp(KeyCode.S))
+        if (DoorFree())
         {
             SpawnNext();
         }
     }
 
+    public bool DoorFree()
+    {
+        for (int y = (int)spawnTile.y; y < (int)spawnTile.y + 2; y++)
+            for (int x = (int)spawnTile.x; x < (int)spawnTile.x + 2; x++)
+                if (Train.grid[x, y] != null)
+                    return false;
+        return true;
+    }
+
     public void SpawnNext()
     {
         // Random Index
-        int i = Random.Range(0, groups.Length);
+        int i = Random.Range(0, GameManager.Instance.spawnGroups.Length);
 
         // Spawn Group at current Position
-        GameObject blockGroup = Instantiate(groups[i], transform.position, Quaternion.identity);
-        blockGroup.GetComponent<BlockGroup>().ChangeColor();
+        GameObject blockGroup = Instantiate(GameManager.Instance.spawnGroups[i], spawnTile, Quaternion.identity);
     }
 }
