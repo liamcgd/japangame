@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Train : MonoBehaviour
 {
-    public int length;
-
-    public int width;
+    public static int length = 12;
+    public static int width = 8;
+    public static Transform[,] grid;
 
     public GameObject test;
 
-    private GameObject[,] trainGrid;
-    // Start is called before the first frame update
+
     void Start()
     {
-        CreateTrain();
+        grid = new Transform[width, length];
+        // CreateTrain();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void CreateTrain()
@@ -35,6 +34,14 @@ public class Train : MonoBehaviour
             }
         }
     }
-    
-    
+
+    public static Vector2 RoundVector(Vector2 v)
+    {
+        return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
+    }
+
+    public static bool InsideTrain(Vector2 pos)
+    {
+        return ((int)pos.x >= 0 && (int)pos.x < width && (int)pos.y >= 0 && (int)pos.y < length);
+    }
 }
