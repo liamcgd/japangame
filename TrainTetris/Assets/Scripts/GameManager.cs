@@ -26,13 +26,13 @@ public class GameManager : MonoBehaviour
         else if (IsInvoking(nameof(UpdateTimer)))
         {
             CancelInvoke(nameof(UpdateTimer));
-            timerText.text = "Departure: 0";
+            timerText.text = "00:00";
         }
     }
 
     private void UpdateTimer()
     {
-        timerText.text = "Departure: " + Mathf.Ceil(depTimer).ToString();
+        timerText.text = "00:" + Mathf.Ceil(depTimer).ToString();
     }
 
     public void PauseGame()
