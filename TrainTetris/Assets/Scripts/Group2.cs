@@ -20,10 +20,6 @@ public class Group2 : BlockGroup
             transform.GetChild(0),
             transform.GetChild(1),
         };
-        // materials = new List<Material>() {
-        //     children[0].GetComponent<SpriteRenderer>().material,
-        //     children[1].GetComponent<SpriteRenderer>().material,
-        // };
         GameManager.Instance.nextStopEvent += NextStop;
         ChangeColor();
         RandomRotation();

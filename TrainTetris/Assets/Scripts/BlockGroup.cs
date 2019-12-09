@@ -7,13 +7,13 @@ using Random = UnityEngine.Random;
 
 public class BlockGroup : MonoBehaviour
 {
+    [SerializeField] private Material[] patterns;
     private Vector3 screenPoint;
     private Vector3 offset;
     private Vector3 previousPos;
     protected int rotateCounter = 0;
     protected int stopsLeft;
     protected List<Transform> children;
-    protected List<Material> materials;
 
     private SpriteRenderer[] renderers;
     [SerializeField] private TextMeshProUGUI stopsLeftText;
@@ -22,6 +22,13 @@ public class BlockGroup : MonoBehaviour
     {
         stopsLeft = Random.Range(0, 3);
         renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+        int pattern = Random.Range(0, patterns.Length - 1);
+
+        foreach (var rend in renderers)
+        {
+            rend.material = patterns[pattern];
+        }
     }
 
     public virtual void Start()
@@ -29,13 +36,8 @@ public class BlockGroup : MonoBehaviour
         children = new List<Transform>() {
             transform.GetChild(0)
         };
-        // materials = new List<Material>()
-        // {
-        //     transforms[0].GetComponent<SpriteRenderer>().material
-        // };
         GameManager.Instance.nextStopEvent += NextStop;
         ChangeColor();
-        // RandomRotation();
         UpdateGrid();
     }
 

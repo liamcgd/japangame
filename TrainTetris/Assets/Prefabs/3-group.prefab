@@ -324,6 +324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94059f9b4b1dc8d478949d462e5b0c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patterns:
+  - {fileID: 2100000, guid: c7eabf0e62639b8448e1ef0472dab881, type: 2}
+  - {fileID: 2100000, guid: 68404302f9a9c51468c52239406c8c02, type: 2}
+  - {fileID: 2100000, guid: ce4edef611cc6344c93d0e06f2245dc1, type: 2}
   stopsLeftText: {fileID: 4295470031354521389}
   test: {fileID: 0}
 --- !u!60 &-6627968603256354895
