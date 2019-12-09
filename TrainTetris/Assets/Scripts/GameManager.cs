@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
     private List<Station> stations;
     private int stationNumber = 0;
 
-    private float depTimer = 30;
+    public float depTimer = 30;
+    private float timer;
     public int score = 0;
     public event Action nextStopEvent;
     public string spawnSide;
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        timer = depTimer;
         InvokeRepeating(nameof(UpdateTimer), 0, 1);
         // Colours to fill each person by stop
 
@@ -67,9 +69,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (depTimer > 0)
+        if (timer > 0)
         {
-            depTimer -= Time.deltaTime;
+            timer -= Time.deltaTime;
         }
         else if (IsInvoking(nameof(UpdateTimer)))
         {
@@ -104,11 +106,13 @@ public class GameManager : MonoBehaviour
         {
             nextStopEvent();
         }
+        timer = depTimer;
+        InvokeRepeating(nameof(UpdateTimer), 0, 1);
     }
 
     private void UpdateTimer()
     {
-        timerText.text = "00:" + Mathf.Ceil(depTimer).ToString("00");
+        timerText.text = "00:" + Mathf.Ceil(timer).ToString("00");
     }
 
     public void PauseGame()

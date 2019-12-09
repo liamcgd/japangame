@@ -12,7 +12,7 @@ public class BlockGroup : MonoBehaviour
     private Vector3 previousPos;
     protected int rotateCounter = 0;
     protected int stopsLeft;
-    protected List<GameObject> children;
+    protected List<Transform> children;
     protected List<Material> materials;
 
     private SpriteRenderer[] renderers;
@@ -20,14 +20,14 @@ public class BlockGroup : MonoBehaviour
 
     public void Awake()
     {
-        stopsLeft = Random.Range(1, 4);
+        stopsLeft = Random.Range(0, 3);
         renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
     }
 
     public virtual void Start()
     {
-        children = new List<GameObject>() {
-            transform.GetChild(0).gameObject
+        children = new List<Transform>() {
+            transform.GetChild(0)
         };
         // materials = new List<Material>()
         // {
@@ -78,10 +78,11 @@ public class BlockGroup : MonoBehaviour
         //{
         //    g.GetComponent<SpriteRenderer>().color = GameManager.Instance.stopColours[stopsLeft - 1];
         //}
+        // Debug.Log(name + " stops left: " + stopsLeft);
 
         foreach (var r in renderers)
         {
-            r.color = GameManager.Instance.stopColours[stopsLeft - 1];
+            r.color = GameManager.Instance.stopColours[stopsLeft];
         }
 
         stopsLeftText.text = stopsLeft.ToString();
@@ -107,10 +108,10 @@ public class BlockGroup : MonoBehaviour
 
     public bool IsValidGridPosition()
     {
-        foreach (GameObject g in children)
+        foreach (Transform t in children)
         {
             // Round vector (Necessary?)
-            Vector2 v = Train.RoundVector(g.transform.position);
+            Vector2 v = Train.RoundVector(t.position);
             // If not inside the train borders
             if (!Train.InsideTrain(v))
                 return false;
@@ -132,10 +133,10 @@ public class BlockGroup : MonoBehaviour
                         Train.grid[x, y] = null;
 
         // Add new children to grid
-        foreach (GameObject g in children)
+        foreach (Transform t in children)
         {
-            Vector2 v = Train.RoundVector(g.transform.position);
-            Train.grid[(int)v.x, (int)v.y] = g.transform;
+            Vector2 v = Train.RoundVector(t.position);
+            Train.grid[(int)v.x, (int)v.y] = t;
         }
     }
 
@@ -150,7 +151,7 @@ public class BlockGroup : MonoBehaviour
 
     public virtual void Rotate()
     {
-        stopsLeftText.transform.parent.position = new Vector2(children[0].transform.position.x + 0.5f, children[0].transform.position.y + 0.5f);
+        stopsLeftText.transform.parent.position = new Vector2(children[0].position.x + 0.5f, children[0].position.y + 0.5f);
         rotateCounter++;
         if (rotateCounter > 3)
             rotateCounter = 0;
