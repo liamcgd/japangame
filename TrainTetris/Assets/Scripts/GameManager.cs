@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private CanvasGroup pauseMenu;
+    [SerializeField] private Canvas endGameCanvas;
+    [SerializeField] private TextMeshProUGUI endGameScoreText;
+    [Header("Audio")]
     [SerializeField] private AudioClip[] stationJingles;
     [SerializeField] private AudioClip[] departureJingles;
     [SerializeField, FormerlySerializedAs("audio")] private AudioSource audioSource;
@@ -72,10 +75,10 @@ public class GameManager : MonoBehaviour
             timerText.text = "00:00";
             // Cancel input?
             // Move to next station
-            if (stationNumber >= stations.Count)
+            if (stationNumber >= stations.Count - 1)
             {
                 // Game Over
-                QuitGame();
+                EndGame();
             }
             else
             {
@@ -134,6 +137,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         pauseMenu.alpha = 0;
         pauseMenu.blocksRaycasts = false;
+    }
+
+    private void EndGame()
+    {
+        endGameScoreText.text = "Your score: " + score.ToString();
+        endGameCanvas.gameObject.SetActive(true);
     }
 
     public void QuitGame()
