@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     {
         //spawners = new List<Spawner>();
         GameManager.Instance.nextStopEvent += EnableSpawners;
+        DisableSpawners();
         EnableSpawners();
     }
 
@@ -28,6 +29,14 @@ public class SpawnManager : MonoBehaviour
             spawners[1].enabled = false;
             spawners[2].enabled = true;
             spawners[3].enabled = true;
+        }
+    }
+
+    public void DisableSpawners()
+    {
+        foreach (Spawner s in spawners)
+        {
+            s.enabled = false;
         }
     }
 

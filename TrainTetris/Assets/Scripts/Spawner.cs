@@ -6,12 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public Vector2 spawnTile;
 
-    private void Start()
-    {
-        InvokeRepeating(nameof(Spawn), 0, 1);
-    }
-
-    private void Spawn()
+    public void Spawn()
     {
         if (DoorFree())
         {
@@ -35,5 +30,15 @@ public class Spawner : MonoBehaviour
 
         // Spawn Group at current Position
         GameObject blockGroup = Instantiate(GameManager.Instance.spawnGroups[i], spawnTile, Quaternion.identity);
+    }
+
+    private void OnEnable()
+    {
+        InvokeRepeating(nameof(Spawn), 0, 1);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
     }
 }
