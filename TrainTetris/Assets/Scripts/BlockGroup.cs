@@ -68,24 +68,12 @@ public class BlockGroup : MonoBehaviour
 
     public void ChangeColor()
     {
-        // Set fill and border colours here
-        // foreach (Material m in materials)
-        // {
-        //     m.SetColor("_Colour", GameManager.stopColours[stopsLeft - 1]);
-        //     m.SetColor("_BorderColour", GameManager.stopBorderColours[stopsLeft - 1]);
-        // }
-        //foreach (GameObject g in children)
-        //{
-        //    g.GetComponent<SpriteRenderer>().color = GameManager.Instance.stopColours[stopsLeft - 1];
-        //}
-        // Debug.Log(name + " stops left: " + stopsLeft);
-
         foreach (var r in renderers)
         {
             r.color = GameManager.Instance.stopColours[stopsLeft];
         }
 
-        stopsLeftText.text = stopsLeft.ToString();
+        stopsLeftText.text = (stopsLeft + 1).ToString();
     }
 
     public void NextStop()
