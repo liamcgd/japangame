@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,15 +15,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private CanvasGroup pauseMenu;
-    // Feel free to move functionality out if wanted
-    [SerializeField] public Color[] stopColours;
-    [SerializeField] public Color[] stopBorderColours;
+    [SerializeField] private AudioClip[] stationJingles;
+    [SerializeField] private AudioClip[] departureJingles;
+    [SerializeField, FormerlySerializedAs("audio")] private AudioSource audioSource;
 
     private List<Station> stations;
     private int stationNumber = 0;
-
-    public float depTimer = 30;
     private float timer;
+
+    public Color[] stopColours;
+    public float depTimer = 30;
     public int score = 0;
     public event Action nextStopEvent;
     public string spawnSide;
@@ -30,21 +33,10 @@ public class GameManager : MonoBehaviour
     {
         // Singleton
         if (_instance != null && _instance != this)
-            Destroy(this.gameObject);
+            Destroy(this);
         else
             _instance = this;
 
-        //stopColours = new Color[] {
-        //    new Color(250f, 135f, 127f),
-        //    new Color(242f, 203f, 124f),
-        //    new Color(131f, 181f, 130f),
-        //};
-        // Colour to fill each person border by stop
-        stopBorderColours = new Color[] {
-            new Color(191f, 40f, 68f),
-            new Color(230f, 151f, 117f),
-            new Color(102f, 117f, 76f),
-        };
         stations = new List<Station>()
         {
             new Station("Tokyo", "right"),
@@ -65,6 +57,7 @@ public class GameManager : MonoBehaviour
         // Colours to fill each person by stop
 
         stationText.text = stations[stationNumber].StationName;
+        audioSource.PlayOneShot(stationJingles[stationNumber]);
     }
 
     void Update()
@@ -99,13 +92,27 @@ public class GameManager : MonoBehaviour
 
     public void ChangeStation()
     {
+        StartCoroutine(PlayDepJingle());
+    }
+
+    private IEnumerator PlayDepJingle()
+    {
+        audioSource.PlayOneShot(departureJingles[Random.Range(0, departureJingles.Length - 1)]);
+        while (audioSource.isPlaying)
+        {
+            if (Time.timeScale == 1)
+            {
+                Time.timeScale = 0;//0.01f;
+            }
+            yield return null;
+        }
+        Time.timeScale = 1;
+
         stationNumber++;
         stationText.text = stations[stationNumber].StationName;
         spawnSide = stations[stationNumber].EntryDirection;
-        if (nextStopEvent != null)
-        {
-            nextStopEvent();
-        }
+        audioSource.PlayOneShot(stationJingles[stationNumber]);
+        nextStopEvent?.Invoke();
         timer = depTimer;
         InvokeRepeating(nameof(UpdateTimer), 0, 1);
     }
