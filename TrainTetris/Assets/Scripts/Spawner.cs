@@ -1,10 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
     public Vector2 spawnTile;
+    public Image nextBlockUI;
+    private int nextBlockIndex;
+
+    private void Start()
+    {
+        nextBlockIndex = Random.Range(0, SpawnManager.Instance.spawnGroups.Length);
+        nextBlockUI.sprite = SpawnManager.Instance.blockUI[nextBlockIndex];
+        nextBlockUI.SetNativeSize();
+    }
 
     public void Spawn()
     {
@@ -25,20 +35,25 @@ public class Spawner : MonoBehaviour
 
     public void SpawnNext()
     {
-        // Random Index
-        int i = Random.Range(0, GameManager.Instance.spawnGroups.Length);
+        // Spawn Group
+        GameObject blockGroup = Instantiate(SpawnManager.Instance.spawnGroups[nextBlockIndex], spawnTile, Quaternion.identity);
 
-        // Spawn Group at current Position
-        GameObject blockGroup = Instantiate(GameManager.Instance.spawnGroups[i], spawnTile, Quaternion.identity);
+        // Determine next group
+        nextBlockIndex = Random.Range(0, SpawnManager.Instance.spawnGroups.Length);
+        // Display UI for next group
+        nextBlockUI.sprite = SpawnManager.Instance.blockUI[nextBlockIndex];
+        nextBlockUI.SetNativeSize();
     }
 
     private void OnEnable()
     {
+        nextBlockUI.enabled = true;
         InvokeRepeating(nameof(Spawn), 0, 1);
     }
 
     private void OnDisable()
     {
         CancelInvoke();
+        nextBlockUI.enabled = false;
     }
 }

@@ -1,10 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
+    private static SpawnManager _instance;
+    public static SpawnManager Instance { get { return _instance; } }
     public List<Spawner> spawners;
+    [SerializeField] public GameObject[] spawnGroups;
+    [SerializeField] public Sprite[] blockUI;
+
+
+    private void Awake()
+    {
+        // Singleton
+        if (_instance != null && _instance != this)
+            Destroy(this.gameObject);
+        else
+            _instance = this;
+    }
 
     void Start()
     {

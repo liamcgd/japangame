@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     // Feel free to move functionality out if wanted
     [SerializeField] public Color[] stopColours;
     [SerializeField] public Color[] stopBorderColours;
-    [SerializeField] public GameObject[] spawnGroups;
 
     private List<Station> stations;
     private int stationNumber = 0;

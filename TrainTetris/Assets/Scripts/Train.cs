@@ -47,19 +47,22 @@ public class Train : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        for (int x = 0; x < width; x++)
+        if (grid != null)
         {
-            for (int y = 0; y < length; y++)
+            for (int x = 0; x < width; x++)
             {
-                if (grid[x, y] == null)
+                for (int y = 0; y < length; y++)
                 {
-                    Gizmos.color = Color.green;
+                    if (grid[x, y] == null)
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.red;
+                    }
+                    Gizmos.DrawCube(new Vector3(x + 0.5f, y + 0.5f), Vector2.one / 2);
                 }
-                else
-                {
-                    Gizmos.color = Color.red;
-                }
-                Gizmos.DrawCube(new Vector3(x + 0.5f, y + 0.5f), Vector2.one / 2);
             }
         }
     }
