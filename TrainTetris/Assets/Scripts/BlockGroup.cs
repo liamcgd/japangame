@@ -15,13 +15,13 @@ public class BlockGroup : MonoBehaviour
     protected List<GameObject> children;
     protected List<Material> materials;
 
-    private SpriteRenderer[] _renderers;
+    private SpriteRenderer[] renderers;
     [SerializeField] private TextMeshProUGUI stopsLeftText;
 
     public void Awake()
     {
         stopsLeft = Random.Range(1, 4);
-        _renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        renderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
     }
 
     public virtual void Start()
@@ -74,9 +74,14 @@ public class BlockGroup : MonoBehaviour
         //     m.SetColor("_Colour", GameManager.stopColours[stopsLeft - 1]);
         //     m.SetColor("_BorderColour", GameManager.stopBorderColours[stopsLeft - 1]);
         // }
-        foreach (GameObject g in children)
+        //foreach (GameObject g in children)
+        //{
+        //    g.GetComponent<SpriteRenderer>().color = GameManager.Instance.stopColours[stopsLeft - 1];
+        //}
+
+        foreach (var r in renderers)
         {
-            g.GetComponent<SpriteRenderer>().color = GameManager.Instance.stopColours[stopsLeft - 1];
+            r.color = GameManager.Instance.stopColours[stopsLeft - 1];
         }
 
         stopsLeftText.text = stopsLeft.ToString();
@@ -145,6 +150,7 @@ public class BlockGroup : MonoBehaviour
 
     public virtual void Rotate()
     {
+        stopsLeftText.transform.parent.position = new Vector2(children[0].transform.position.x + 0.5f, children[0].transform.position.y + 0.5f);
         rotateCounter++;
         if (rotateCounter > 3)
             rotateCounter = 0;

@@ -12,9 +12,9 @@ public class Group3 : BlockGroup
     {
         rotatePoints = new Vector2[,] {
             { Vector2.zero, Vector2.right, Vector2.up },
-            { Vector2.zero, Vector2.right, Vector2.one },
-            { Vector2.up, Vector2.one, Vector2.right },
-            { Vector2.zero, Vector2.up, Vector2.one },
+            { Vector2.up, Vector2.zero, Vector2.one },
+            { Vector2.one, Vector2.up, Vector2.right },
+            { Vector2.right, Vector2.one, Vector2.zero },
         };
         children = new List<GameObject>() {
             transform.Find("Block").gameObject,

@@ -34,11 +34,11 @@ public class GameManager : MonoBehaviour
         else
             _instance = this;
 
-        stopColours = new Color[] {
-            new Color(250f, 135f, 127f),
-            new Color(242f, 203f, 124f),
-            new Color(131f, 181f, 130f),
-        };
+        //stopColours = new Color[] {
+        //    new Color(250f, 135f, 127f),
+        //    new Color(242f, 203f, 124f),
+        //    new Color(131f, 181f, 130f),
+        //};
         // Colour to fill each person border by stop
         stopBorderColours = new Color[] {
             new Color(191f, 40f, 68f),
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateTimer()
     {
-        timerText.text = "00:" + Mathf.Ceil(depTimer).ToString();
+        timerText.text = "00:" + Mathf.Ceil(depTimer).ToString("00");
     }
 
     public void PauseGame()

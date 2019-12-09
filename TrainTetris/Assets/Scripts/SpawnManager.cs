@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        spawners = new List<Spawner>();
+        //spawners = new List<Spawner>();
         GameManager.Instance.nextStopEvent += EnableSpawners;
         EnableSpawners();
     }
